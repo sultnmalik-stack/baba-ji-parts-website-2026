@@ -19,6 +19,7 @@ type Vehicle = {
   location?: string;
 };
 
+// TODO: your BJ-001 to BJ-015 objects here (unchanged from your current code)
 const VEHICLES: Vehicle[] = [
   {
     id: "BJ-001",
@@ -40,7 +41,7 @@ const VEHICLES: Vehicle[] = [
       "/vehicle-stock/BJ-001-3.jpg",
     ],
   },
-  // 🔥 keep all your BJ-002 ... BJ-015 objects here exactly as you have them
+  // ... keep the rest of your BJ-002 to BJ-015 exactly as you have them ...
 ];
 
 const ITEMS_PER_PAGE = 15;
@@ -59,7 +60,7 @@ const VehicleStock: React.FC = () => {
   const [modalVehicle, setModalVehicle] = useState<Vehicle | null>(null);
   const [modalImageIndex, setModalImageIndex] = useState<number>(0);
 
-  // 🔍 sync header search (?q=) into this page
+  // sync header search (?q=) into this page
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const q = params.get("q") || "";
@@ -171,17 +172,17 @@ const VehicleStock: React.FC = () => {
     <div className="min-h-screen bg-white text-black">
       {/* Header */}
       <section className="border-b border-gray-200 bg-black text-white">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
               Vehicle Stock
             </h1>
-            <p className="mt-2 text-sm sm:text-base text-white/80">
+            <p className="mt-2 text-xs sm:text-sm md:text-base text-white/80">
               Complete vehicles for dismantling, parts and export — refreshed
               daily from our Campbellfield yard.
             </p>
           </div>
-          <div className="text-sm text-white/70">
+          <div className="text-xs sm:text-sm text-white/70">
             <p className="font-semibold text-[#D4AF37]">
               Need today&apos;s full list?
             </p>
@@ -198,7 +199,7 @@ const VehicleStock: React.FC = () => {
             {/* Left side: search + dropdowns */}
             <div className="flex flex-1 flex-col gap-4">
               <div className="w-full">
-                <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-600">
+                <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
                   Search
                 </label>
                 <div className="relative">
@@ -218,7 +219,7 @@ const VehicleStock: React.FC = () => {
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 {/* Make filter */}
                 <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-600">
+                  <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
                     Make
                   </label>
                   <select
@@ -237,7 +238,7 @@ const VehicleStock: React.FC = () => {
 
                 {/* Year filter */}
                 <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-600">
+                  <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
                     Year
                   </label>
                   <select
@@ -256,7 +257,7 @@ const VehicleStock: React.FC = () => {
 
                 {/* Status filter */}
                 <div>
-                  <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-600">
+                  <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-600">
                     Status
                   </label>
                   <select
@@ -276,14 +277,14 @@ const VehicleStock: React.FC = () => {
             </div>
 
             {/* Right: reset + count */}
-            <div className="flex flex-col items-start gap-2 md:items-end">
+            <div className="mt-2 flex flex-col items-start gap-2 md:mt-0 md:items-end">
               <button
                 onClick={resetFilters}
-                className="rounded-full border border-gray-300 bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-gray-700 hover:border-[#D4AF37] hover:text-black hover:shadow-sm"
+                className="rounded-full border border-gray-300 bg-white px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-700 hover:border-[#D4AF37] hover:text-black hover:shadow-sm"
               >
                 Clear filters
               </button>
-              <p className="text-sm text-gray-600">
+              <p className="text-xs sm:text-sm text-gray-600">
                 Showing{" "}
                 <span className="font-semibold text-black">
                   {paginatedVehicles.length}
@@ -304,36 +305,34 @@ const VehicleStock: React.FC = () => {
       </section>
 
       {/* Grid */}
-      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         {filteredVehicles.length === 0 ? (
           <div className="rounded-xl border border-gray-200 bg-gray-50 px-6 py-10 text-center">
-            <h2 className="text-lg font-semibold mb-2">No vehicles found</h2>
-            <p className="text-sm text-gray-700 mb-4">
+            <h2 className="mb-2 text-lg font-semibold">No vehicles found</h2>
+            <p className="mb-4 text-sm text-gray-700">
               Try clearing filters or searching with a different keyword.
             </p>
             <p className="text-sm text-gray-600">
-              Or call <span className="font-semibold">03 9359 2061</span> /
-              <span className="font-semibold"> 0430 099 873</span> and our team
+              Or call <span className="font-semibold">03 9359 2061</span> /{" "}
+              <span className="font-semibold">0430 099 873</span> and our team
               will check yard stock for you.
             </p>
           </div>
         ) : (
           <>
-            {/* 2 cars per row on desktop, 1 on mobile */}
-            <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
+            <div className="grid gap-6 sm:grid-cols-2">
               {paginatedVehicles.map((v) => (
                 <article
                   key={v.id}
-                  className="group flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:-translate-y-1 hover:shadow-lg transition"
+                  className="group flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                 >
-                  {/* Card image – sharp 4:3 */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-black">
+                  <div className="relative h-48 w-full overflow-hidden bg-black sm:h-56">
                     <img
                       src={v.imageUrls[0]}
                       alt={`${v.year} ${v.make} ${v.model}`}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                      className="h-full w-full object-cover opacity-90 transition group-hover:scale-[1.03] group-hover:opacity-100"
                     />
-                    <div className="absolute left-3 top-3 rounded-full bg-black/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-white">
+                    <div className="absolute left-3 top-3 rounded-full bg-black/80 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white">
                       {v.status === "In Stock" && (
                         <span className="text-[#D4AF37]">In Stock</span>
                       )}
@@ -397,13 +396,13 @@ const VehicleStock: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => openModal(v)}
-                        className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-700 hover:text-black"
+                        className="text-[11px] font-semibold uppercase tracking-[0.16em] text-gray-700 hover:text-black"
                       >
                         More details
                       </button>
                       <a
                         href="tel:0430099873"
-                        className="rounded-full bg-[#D4AF37] px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-black hover:bg-[#c39c30] transition"
+                        className="rounded-full bg-[#D4AF37] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-[#c39c30]"
                       >
                         Enquire
                       </a>
@@ -418,7 +417,7 @@ const VehicleStock: React.FC = () => {
               <button
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="rounded-full border border-gray-300 bg-white px-3 py-1 text-xs font-semibold text-gray-700 disabled:cursor-not-allowed disabled:opacity-40 hover:border-[#D4AF37]"
+                className="rounded-full border border-gray-300 bg.white px-3 py-1 text-xs font-semibold text-gray-700 hover:border-[#D4AF37] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Prev
               </button>
@@ -433,7 +432,7 @@ const VehicleStock: React.FC = () => {
                     className={`h-8 w-8 rounded-full text-xs font-semibold ${
                       isActive
                         ? "bg-[#D4AF37] text-black"
-                        : "bg-white text-gray-700 border border-gray-300 hover:border-[#D4AF37]"
+                        : "border border-gray-300 bg-white text-gray-700 hover:border-[#D4AF37]"
                     }`}
                   >
                     {page}
@@ -444,7 +443,7 @@ const VehicleStock: React.FC = () => {
               <button
                 onClick={() => goToPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="rounded-full border border-gray-300 bg-white px-3 py-1 text-xs font-semibold text-gray-700 disabled:cursor-not-allowed disabled:opacity-40 hover:border-[#D4AF37]"
+                className="rounded-full border border-gray-300 bg.white px-3 py-1 text-xs font-semibold text-gray-700 hover:border-[#D4AF37] disabled:cursor-not-allowed disabled:opacity-40"
               >
                 Next
               </button>
@@ -455,8 +454,9 @@ const VehicleStock: React.FC = () => {
 
       {/* Modal for gallery */}
       {modalVehicle && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-          <div className="relative w-full max-w-4xl rounded-2xl bg-white p-4 sm:p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-3 sm:px-4">
+          <div className="relative w-full max-w-4xl rounded-2xl bg-white p-3 sm:p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+            {/* Close button */}
             <button
               onClick={closeModal}
               className="absolute right-3 top-3 rounded-full bg-black/5 px-2 py-1 text-xs font-semibold text-gray-600 hover:bg-black/10"
@@ -465,7 +465,7 @@ const VehicleStock: React.FC = () => {
             </button>
 
             <div className="grid gap-4 md:grid-cols-2">
-              {/* LEFT: big image + thumbs – now natural ratio, no over-stretch */}
+              {/* Left: big image + arrows */}
               <div className="flex flex-col">
                 <div className="relative w-full overflow-hidden rounded-xl bg-black">
                   <img
@@ -474,19 +474,19 @@ const VehicleStock: React.FC = () => {
                       modalVehicle.imageUrls[0]
                     }
                     alt={`${modalVehicle.year} ${modalVehicle.make} ${modalVehicle.model}`}
-                    className="mx-auto h-auto w-full max-h-[520px] object-contain"
+                    className="w-full h-auto max-h-[70vh] object-contain"
                   />
                   {modalVehicle.imageUrls.length > 1 && (
                     <>
                       <button
                         onClick={prevImage}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 px-2 py-1 text-white text-xs hover:bg-black/80"
+                        className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 px-2 py-1 text-xs text-white hover:bg-black/80"
                       >
                         ‹
                       </button>
                       <button
                         onClick={nextImage}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 px-2 py-1 text-white text-xs hover:bg-black/80"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/60 px-2 py-1 text-xs text-white hover:bg-black/80"
                       >
                         ›
                       </button>
@@ -494,6 +494,7 @@ const VehicleStock: React.FC = () => {
                   )}
                 </div>
 
+                {/* Thumbnails */}
                 {modalVehicle.imageUrls.length > 1 && (
                   <div className="mt-3 flex gap-2 overflow-x-auto">
                     {modalVehicle.imageUrls.map((url, idx) => (
@@ -517,19 +518,19 @@ const VehicleStock: React.FC = () => {
                 )}
               </div>
 
-              {/* RIGHT: details */}
+              {/* Right: details */}
               <div className="flex flex-col gap-3">
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-900">
+                  <h2 className="text-base sm:text-lg font-semibold text-gray-900">
                     {modalVehicle.year} {modalVehicle.make}{" "}
                     {modalVehicle.model}
                   </h2>
                   {modalVehicle.variant && (
-                    <p className="text-sm text-gray-600">
+                    <p className="text-xs sm:text-sm text-gray-600">
                       {modalVehicle.variant}
                     </p>
                   )}
-                  <div className="mt-2 inline-flex items-center rounded-full bg-black text-xs font-semibold uppercase tracking-[0.16em] px-3 py-1 text-white">
+                  <div className="mt-2 inline-flex items-center rounded-full bg-black px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-white">
                     {modalVehicle.status === "In Stock" && (
                       <span className="text-[#D4AF37]">In Stock</span>
                     )}
@@ -542,7 +543,7 @@ const VehicleStock: React.FC = () => {
                   </div>
                 </div>
 
-                <dl className="mt-2 space-y-1 text-sm text-gray-800">
+                <dl className="mt-2 space-y-1 text-xs sm:text-sm text-gray-800">
                   {modalVehicle.engine && (
                     <div className="flex justify-between gap-2">
                       <dt className="text-gray-500">Engine</dt>
@@ -584,7 +585,7 @@ const VehicleStock: React.FC = () => {
                 </dl>
 
                 {modalVehicle.notes && (
-                  <p className="mt-2 text-sm text-gray-700">
+                  <p className="mt-2 text-xs sm:text-sm text-gray-700">
                     {modalVehicle.notes}
                   </p>
                 )}
@@ -592,11 +593,11 @@ const VehicleStock: React.FC = () => {
                 <div className="mt-4 flex flex-wrap items-center gap-3">
                   <a
                     href="tel:0430099873"
-                    className="rounded-full bg-[#D4AF37] px-5 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-black hover:bg-[#c39c30] transition"
+                    className="rounded-full bg-[#D4AF37] px-5 py-2 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.16em] text-black transition hover:bg-[#c39c30]"
                   >
                     Call about this vehicle
                   </a>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-[11px] sm:text-xs text-gray-600">
                     Quote stock number:{" "}
                     <span className="font-semibold">
                       {modalVehicle.stockNumber || modalVehicle.id}
@@ -613,3 +614,4 @@ const VehicleStock: React.FC = () => {
 };
 
 export default VehicleStock;
+
