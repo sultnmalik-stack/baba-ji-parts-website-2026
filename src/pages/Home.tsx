@@ -9,17 +9,15 @@ const Home: React.FC = () => {
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
 
-  const handleHeroSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Build a simple search string from the hero filters
+  // 🚀 DIRECTLY push to /vehicle-stock with ?q=...
+  const handleHeroSearch = () => {
     const parts = [year, make, model].filter(Boolean);
     const q = parts.join(" ");
 
-    if (q) {
+    if (q.trim().length > 0) {
       navigate(`/vehicle-stock?q=${encodeURIComponent(q)}`);
     } else {
-      // If nothing selected, just go to Vehicle Stock
+      // If they didn’t pick anything, just show all stock
       navigate("/vehicle-stock");
     }
   };
@@ -32,7 +30,8 @@ const Home: React.FC = () => {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('/hero-bg.jpg')", // use your existing hero image path here
+            // ⚠️ keep this pointing to whatever hero image you already use
+            backgroundImage: "url('/hero-bg.jpg')",
           }}
         />
         {/* Dark overlay */}
@@ -45,15 +44,12 @@ const Home: React.FC = () => {
               Find your parts in seconds.
             </h1>
             <p className="mt-3 max-w-xl text-sm sm:text-base text-white/80">
-              Genuine and quality recycled parts, sourced, checked and
-              delivered across Melbourne and beyond.
+              Genuine and quality recycled parts, sourced, checked and delivered
+              across Melbourne and beyond.
             </p>
 
-            {/* FORM */}
-            <form
-              onSubmit={handleHeroSearch}
-              className="mt-6 space-y-4 text-sm sm:text-base"
-            >
+            {/* SEARCH UI (no form submit, we just use onClick) */}
+            <div className="mt-6 space-y-4 text-sm sm:text-base">
               {/* Make & Model */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
@@ -71,7 +67,7 @@ const Home: React.FC = () => {
                     <option value="Ford">Ford</option>
                     <option value="Mazda">Mazda</option>
                     <option value="Hyundai">Hyundai</option>
-                    {/* add more later if you want */}
+                    {/* add more makes later if you want */}
                   </select>
                 </div>
 
@@ -108,20 +104,21 @@ const Home: React.FC = () => {
                     <option value="2020">2020</option>
                     <option value="2019">2019</option>
                     <option value="2018">2018</option>
-                    {/* add more ranges later if you like */}
+                    {/* etc – extend as needed */}
                   </select>
                 </div>
 
                 <div className="sm:ml-3">
                   <button
-                    type="submit"
+                    type="button"
+                    onClick={handleHeroSearch}
                     className="mt-1 inline-flex w-full items-center justify-center rounded-full bg-[#D4AF37] px-6 py-2.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.16em] text-black hover:bg-[#c39c30] transition"
                   >
                     Search Parts
                   </button>
                 </div>
               </div>
-            </form>
+            </div>
 
             <p className="mt-4 text-[11px] sm:text-xs text-white/60">
               Prefer to talk? Call us on{" "}
@@ -132,7 +129,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* BELOW HERO – existing intro text */}
+      {/* BELOW HERO – keep your intro / marketing copy */}
       <section className="bg-white py-10 text-black">
         <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
