@@ -1,135 +1,127 @@
 // src/pages/Home.tsx
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const Home: React.FC = () => {
-  const navigate = useNavigate();
-
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState("");
 
-  // 🚀 DIRECTLY push to /vehicle-stock with ?q=...
-  const handleHeroSearch = () => {
-    const parts = [year, make, model].filter(Boolean);
-    const q = parts.join(" ");
+  // 🔥 Hard redirect to vehicle stock with q=... (guaranteed to work)
+  const handleHeroSearch = (e: React.FormEvent) => {
+    e.preventDefault();
 
-    if (q.trim().length > 0) {
-      navigate(`/vehicle-stock?q=${encodeURIComponent(q)}`);
-    } else {
-      // If they didn’t pick anything, just show all stock
-      navigate("/vehicle-stock");
+    const parts = [year, make, model].filter(Boolean);
+    const q = parts.join(" ").trim();
+
+    let target = "/vehicle-stock";
+    if (q.length > 0) {
+      target = `/vehicle-stock?q=${encodeURIComponent(q)}`;
     }
+
+    window.location.href = target;
   };
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* HERO SECTION */}
-      <section className="relative h-[520px] w-full overflow-hidden">
-        {/* Background image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            // ⚠️ keep this pointing to whatever hero image you already use
-            backgroundImage: "url('/hero-bg.jpg')",
-          }}
-        />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/55" />
-
-        {/* Content */}
-        <div className="relative z-10 mx-auto flex h-full max-w-6xl items-center px-4 sm:px-6 lg:px-8">
-          <div className="w-full rounded-2xl bg-black/90 px-6 py-8 sm:px-10 sm:py-10 shadow-2xl">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
+      {/* HERO / SEARCH SECTION */}
+      <section className="border-b border-white/10 bg-black">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight">
               Find your parts in seconds.
             </h1>
-            <p className="mt-3 max-w-xl text-sm sm:text-base text-white/80">
+            <p className="mt-3 text-sm sm:text-base text-white/80 max-w-xl">
               Genuine and quality recycled parts, sourced, checked and delivered
               across Melbourne and beyond.
             </p>
+          </div>
 
-            {/* SEARCH UI (no form submit, we just use onClick) */}
-            <div className="mt-6 space-y-4 text-sm sm:text-base">
-              {/* Make & Model */}
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
-                    Make
-                  </label>
-                  <select
-                    value={make}
-                    onChange={(e) => setMake(e.target.value)}
-                    className="w-full rounded-lg border border-white/10 bg-white px-3 py-2 text-sm text-black focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40"
-                  >
-                    <option value="">Select Make</option>
-                    <option value="Toyota">Toyota</option>
-                    <option value="Holden">Holden</option>
-                    <option value="Ford">Ford</option>
-                    <option value="Mazda">Mazda</option>
-                    <option value="Hyundai">Hyundai</option>
-                    {/* add more makes later if you want */}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
-                    Model
-                  </label>
-                  <input
-                    type="text"
-                    value={model}
-                    onChange={(e) => setModel(e.target.value)}
-                    placeholder="Select Model"
-                    className="w-full rounded-lg border border-white/10 bg-white px-3 py-2 text-sm text-black placeholder-black/50 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40"
-                  />
-                </div>
+          {/* FORM ROWS */}
+          <form
+            onSubmit={handleHeroSearch}
+            className="mt-8 space-y-4 text-sm sm:text-base"
+          >
+            {/* Make + Model */}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {/* MAKE */}
+              <div>
+                <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
+                  Make
+                </label>
+                <select
+                  value={make}
+                  onChange={(e) => setMake(e.target.value)}
+                  className="w-full rounded-lg border border-white/15 bg-white px-3 py-2 text-sm text-black focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40"
+                >
+                  <option value="">Select Make</option>
+                  <option value="Toyota">Toyota</option>
+                  <option value="Holden">Holden</option>
+                  <option value="Ford">Ford</option>
+                  <option value="Mazda">Mazda</option>
+                  <option value="Hyundai">Hyundai</option>
+                  {/* Add / adjust makes to taste */}
+                </select>
               </div>
 
-              {/* Year & Button */}
-              <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end">
-                <div className="flex-1">
-                  <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
-                    Year
-                  </label>
-                  <select
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
-                    className="w-full rounded-lg border border-white/10 bg-white px-3 py-2 text-sm text-black focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40"
-                  >
-                    <option value="">Select Year</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                    <option value="2020">2020</option>
-                    <option value="2019">2019</option>
-                    <option value="2018">2018</option>
-                    {/* etc – extend as needed */}
-                  </select>
-                </div>
-
-                <div className="sm:ml-3">
-                  <button
-                    type="button"
-                    onClick={handleHeroSearch}
-                    className="mt-1 inline-flex w-full items-center justify-center rounded-full bg-[#D4AF37] px-6 py-2.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.16em] text-black hover:bg-[#c39c30] transition"
-                  >
-                    Search Parts
-                  </button>
-                </div>
+              {/* MODEL */}
+              <div>
+                <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
+                  Model
+                </label>
+                <input
+                  type="text"
+                  value={model}
+                  onChange={(e) => setModel(e.target.value)}
+                  placeholder="Select Model"
+                  className="w-full rounded-lg border border-white/15 bg-white px-3 py-2 text-sm text-black placeholder-black/50 focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40"
+                />
               </div>
             </div>
 
-            <p className="mt-4 text-[11px] sm:text-xs text-white/60">
+            {/* Year + Button */}
+            <div className="flex flex-col gap-4 md:flex-row md:items-end">
+              <div className="flex-1">
+                <label className="mb-1 block text-[11px] font-semibold uppercase tracking-[0.16em] text-white/70">
+                  Year
+                </label>
+                <select
+                  value={year}
+                  onChange={(e) => setYear(e.target.value)}
+                  className="w-full rounded-lg border border-white/15 bg-white px-3 py-2 text-sm text-black focus:border-[#D4AF37] focus:outline-none focus:ring-2 focus:ring-[#D4AF37]/40"
+                >
+                  <option value="">Select Year</option>
+                  <option value="2024">2024</option>
+                  <option value="2023">2023</option>
+                  <option value="2022">2022</option>
+                  <option value="2021">2021</option>
+                  <option value="2020">2020</option>
+                  <option value="2019">2019</option>
+                  <option value="2018">2018</option>
+                  <option value="2017">2017</option>
+                  {/* Add more years if you want */}
+                </select>
+              </div>
+
+              <div className="md:ml-4">
+                <button
+                  type="submit"
+                  className="inline-flex w-full items-center justify-center rounded-full bg-[#D4AF37] px-8 py-2.5 text-xs sm:text-sm font-semibold uppercase tracking-[0.16em] text-black hover:bg-[#c39c30] transition"
+                >
+                  Search Parts
+                </button>
+              </div>
+            </div>
+
+            <p className="mt-3 text-[11px] sm:text-xs text-white/60">
               Prefer to talk? Call us on{" "}
               <span className="font-semibold text-[#D4AF37]">03 9359 2061</span>{" "}
               and our team will find the right part for you.
             </p>
-          </div>
+          </form>
         </div>
       </section>
 
-      {/* BELOW HERO – keep your intro / marketing copy */}
+      {/* BELOW HERO – INTRO TEXT (unchanged vibe) */}
       <section className="bg-white py-10 text-black">
         <div className="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold">
