@@ -49,19 +49,19 @@ const Navbar: React.FC = () => {
     Electrical: ["Head units", "Window regulators", "Window switches", "Other"],
   };
 
-  // 🔍 submit search from header
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const q = searchTerm.trim();
 
-    const params = new URLSearchParams();
-    const trimmed = searchTerm.trim();
-
-    if (trimmed) {
-      params.set("q", trimmed);
+    // If nothing typed, still go to vehicle stock
+    if (!q) {
+      if (location.pathname !== "/vehicle-stock") {
+        navigate("/vehicle-stock");
+      }
+      return;
     }
 
-    const query = params.toString();
-    navigate(`/vehicle-stock${query ? `?${query}` : ""}`);
+    navigate(`/vehicle-stock?q=${encodeURIComponent(q)}`);
   };
 
   const isVehicleStock = location.pathname === "/vehicle-stock";
@@ -70,28 +70,28 @@ const Navbar: React.FC = () => {
     <header className="w-full bg-black text-white">
       {/* ---------- ROW 1: TOP LINKS ---------- */}
       <div className="border-b border-white/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-end gap-6 px-4 py-2 text-[11px] uppercase tracking-[0.18em] text-white/70">
+        <div className="mx-auto flex max-w-7xl items-center justify-end gap-3 px-4 py-1.5 text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-white/70 overflow-x-auto">
           <button
             onClick={() => navigate("/click-and-collect")}
-            className="hover:text-[#D4AF37] transition"
+            className="whitespace-nowrap hover:text-[#D4AF37] transition"
           >
             Click &amp; Collect
           </button>
           <button
             onClick={() => navigate("/delivery")}
-            className="hover:text-[#D4AF37] transition"
+            className="whitespace-nowrap hover:text-[#D4AF37] transition"
           >
             Delivery
           </button>
           <button
             onClick={() => navigate("/parts-decipher")}
-            className="hover:text-[#D4AF37] transition"
+            className="whitespace-nowrap hover:text-[#D4AF37] transition"
           >
             Parts Decipher
           </button>
           <button
             onClick={() => navigate("/account")}
-            className="hover:text-[#D4AF37] transition"
+            className="whitespace-nowrap hover:text-[#D4AF37] transition"
           >
             Account
           </button>
@@ -100,114 +100,127 @@ const Navbar: React.FC = () => {
 
       {/* ---------- ROW 2: LOGO + SEARCH + PHONES ---------- */}
       <div className="border-b border-white/10">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4">
-          {/* Left: Logo + Brand */}
-          <div
-            className="flex cursor-pointer items-center gap-3"
-            onClick={() => navigate("/")}
-          >
-            <img
-              src="/BABA_JI_PARTS_LOGO_MONO.png"
-              alt="Baba Ji Parts Logo"
-              className="h-12 w-auto object-contain"
-            />
-            <div className="flex flex-col">
-              <span className="text-lg font-bold tracking-[0.25em]">
-                BABA JI PARTS
-              </span>
-            </div>
-          </div>
-
-          {/* Centre: Search bar */}
-          <form
-            onSubmit={handleSearchSubmit}
-            className="flex flex-1 max-w-xl items-center"
-          >
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search by part, make, model or keyword..."
-              className="h-10 flex-1 rounded-l-full bg-white px-4 text-sm text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
-            />
-            <button
-              type="submit"
-              className="h-10 rounded-r-full bg-[#D4AF37] px-5 text-sm font-semibold text-black hover:bg-[#c39c30] transition"
+        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            {/* Left: Logo + Brand */}
+            <div
+              className="flex cursor-pointer items-center gap-3"
+              onClick={() => navigate("/")}
             >
-              Search
-            </button>
-          </form>
-
-          {/* Right: phone badges + cart */}
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col items-end gap-1">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/70 bg-black px-4 py-1 text-xs font-semibold tracking-[0.16em] text-[#D4AF37]">
-                <span className="uppercase">Office</span>
-                <span className="text-sm font-bold">03 9359 2061</span>
-              </div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#D4AF37]/70 bg-black px-4 py-1 text-xs font-semibold tracking-[0.16em] text-[#D4AF37]">
-                <span className="uppercase">Mobile</span>
-                <span className="text-sm font-bold">0430 099 873</span>
+              <img
+                src="/BABA_JI_PARTS_LOGO_MONO.png"
+                alt="Baba Ji Parts Logo"
+                className="h-10 w-auto object-contain sm:h-12"
+              />
+              <div className="flex flex-col">
+                <span className="text-base sm:text-lg font-bold tracking-[0.25em]">
+                  BABA JI PARTS
+                </span>
               </div>
             </div>
 
-            <button
-              type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#D4AF37]/70 bg-black hover:bg-[#D4AF37] hover:text-black transition"
+            {/* Centre: Search bar */}
+            <form
+              onSubmit={handleSearchSubmit}
+              className="flex w-full flex-col gap-2 sm:flex-row sm:items-center md:max-w-xl"
             >
-              <ShoppingCartIcon className="h-5 w-5 text-[#D4AF37] hover:text-black" />
-            </button>
+              <div className="flex w-full">
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search by part, make, model or keyword..."
+                  className="h-10 flex-1 rounded-l-full bg-white px-4 text-sm text-black placeholder-black/50 focus:outline-none focus:ring-2 focus:ring-[#D4AF37]"
+                />
+                <button
+                  type="submit"
+                  className="h-10 rounded-r-full bg-[#D4AF37] px-5 text-xs sm:text-sm font-semibold text-black hover:bg-[#c39c30] transition whitespace-nowrap"
+                >
+                  Search
+                </button>
+              </div>
+            </form>
+
+            {/* Right: phone badges + cart */}
+            <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-end">
+              <div className="flex flex-col items-stretch sm:items-end gap-1">
+                <div className="inline-flex items-center justify-between sm:justify-start gap-2 rounded-full border border-[#D4AF37]/70 bg-black px-3 sm:px-4 py-1 text-[10px] sm:text-xs font-semibold tracking-[0.16em] text-[#D4AF37]">
+                  <span className="uppercase">Office</span>
+                  <span className="text-xs sm:text-sm font-bold">
+                    03 9359 2061
+                  </span>
+                </div>
+                <div className="inline-flex items-center justify-between sm:justify-start gap-2 rounded-full border border-[#D4AF37]/70 bg-black px-3 sm:px-4 py-1 text-[10px] sm:text-xs font-semibold tracking-[0.16em] text-[#D4AF37]">
+                  <span className="uppercase">Mobile</span>
+                  <span className="text-xs sm:text-sm font-bold">
+                    0430 099 873
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[#D4AF37]/70 bg-black hover:bg-[#D4AF37] hover:text-black transition self-end sm:self-auto"
+              >
+                <ShoppingCartIcon className="h-4 w-4 sm:h-5 sm:w-5 text-[#D4AF37] hover:text-black" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* ---------- ROW 3: CATEGORY NAV + VEHICLE STOCK ---------- */}
       <nav className="relative border-b border-white/10">
-        <div className="mx-auto flex max-w-7xl items-center gap-8 px-4 py-3 text-sm font-semibold">
-          {/* Vehicle Stock tab – solid gold pill */}
-          <button
-            onClick={() => navigate("/vehicle-stock")}
-            className={`uppercase tracking-[0.16em] px-4 py-1 rounded-full text-xs font-semibold transition 
-              ${
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center gap-4 py-2">
+            {/* Vehicle Stock pill */}
+            <button
+              onClick={() => navigate("/vehicle-stock")}
+              className={`inline-flex items-center justify-center rounded-full border px-4 py-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.16em] ${
                 isVehicleStock
-                  ? "bg-[#D4AF37] text-black shadow-md"
-                  : "bg-[#D4AF37] text-black/90 hover:bg-[#c39c30]"
-              }`}
-          >
-            Vehicle Stock
-          </button>
-
-          {/* Category dropdowns */}
-          {Object.keys(menus).map((label) => (
-            <div
-              key={label}
-              className="relative"
-              onMouseEnter={() => setOpenMenu(label)}
-              onMouseLeave={() =>
-                setOpenMenu((prev) => (prev === label ? null : prev))
-              }
+                  ? "border-[#D4AF37] bg-[#D4AF37] text-black"
+                  : "border-[#D4AF37]/60 bg-transparent text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black"
+              } transition whitespace-nowrap`}
             >
-              <button className="flex items-center gap-1 text-white/90 hover:text-[#D4AF37] transition">
-                {label}
-                <ChevronDownIcon className="h-4 w-4" />
-              </button>
+              Vehicle Stock
+            </button>
 
-              {openMenu === label && (
-                <div className="absolute left-0 top-full z-40 mt-2 w-64 rounded-lg bg-white p-4 text-sm text-black shadow-2xl">
-                  <ul className="space-y-1.5">
-                    {menus[label].map((item) => (
-                      <li
-                        key={item}
-                        className="cursor-pointer rounded px-2 py-1 hover:bg-gray-100 hover:text-[#D4AF37] transition"
-                      >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+            {/* Category dropdowns – horizontal scroll on mobile */}
+            <div className="flex flex-1 items-center overflow-x-auto no-scrollbar">
+              <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm">
+                {Object.keys(menus).map((label) => (
+                  <div
+                    key={label}
+                    className="relative"
+                    onMouseEnter={() => setOpenMenu(label)}
+                    onMouseLeave={() =>
+                      setOpenMenu((prev) => (prev === label ? null : prev))
+                    }
+                  >
+                    <button className="flex items-center gap-1 text-white/90 hover:text-[#D4AF37] transition whitespace-nowrap">
+                      {label}
+                      <ChevronDownIcon className="h-3 w-3 sm:h-4 sm:w-4" />
+                    </button>
+
+                    {openMenu === label && (
+                      <div className="absolute left-0 top-full z-40 mt-2 w-64 rounded-lg bg-white p-4 text-sm text-black shadow-2xl">
+                        <ul className="space-y-1.5">
+                          {menus[label].map((item) => (
+                            <li
+                              key={item}
+                              className="cursor-pointer rounded px-2 py-1 hover:bg-gray-100 hover:text-[#D4AF37] transition"
+                            >
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </nav>
     </header>
